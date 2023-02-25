@@ -1,0 +1,61 @@
+
+
+DataIO data = new DataIO();
+PFont stdFont;
+public static ArrayList<Space_Object> spaceObjects;
+int currentScreen;
+final int EVENT_NULL=0;
+public static ArrayList<Screen> screens;
+public static ArrayList<Widget> currentWidgets;
+
+void setup(){
+  stdFont=loadFont("Arial-Black-18.vlw");
+  size(500,500);
+  currentScreen = 0;
+  screens = new ArrayList();
+  spaceObjects = new ArrayList();
+  data.readData();
+  println(spaceObjects.get(0).altNames);
+  println(spaceObjects.get(1).altNames);
+  println(spaceObjects.get(998).name);
+  println(spaceObjects.get(998).qQual);
+  println(spaceObjects.get(999).piece);  
+  
+  Widget nextScreen = new Widget(400,450, 90, 30, "Next Screen", 100, stdFont ,1);
+  ArrayList<Widget> buttons = new ArrayList();
+  buttons.add(nextScreen);
+  Screen screen1 = new Screen(buttons, 200);
+  Screen screen2 = new Screen(null, 100);
+  screens.add(screen1);
+  screens.add(screen2);
+  currentWidgets = buttons;
+}
+
+void draw(){
+  if(currentScreen == 0){
+  screens.get(0).draw();
+  }
+  else if (currentScreen == 1){
+  screens.get(1).draw();
+  }
+}
+
+void mousePressed(){
+  if (currentScreen == 1) {
+    currentWidgets = screens.get(0).buttons;
+  } else if (currentScreen == 2) {
+    currentWidgets = screens.get(1).buttons;
+  }
+  int event;
+  for (int i = 0; i<currentWidgets.size(); i++) {
+    Widget aWidget = (Widget) currentWidgets.get(i);
+    event = aWidget.getEvent(mouseX, mouseY);
+    println(event);
+    switch(event) {
+    case 1:
+      println("You pressed a button");
+      currentScreen = 2;
+      break;
+    }
+  }
+}
